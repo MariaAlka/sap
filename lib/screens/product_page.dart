@@ -1,3 +1,4 @@
+import 'package:first/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product_model.dart';
@@ -7,7 +8,7 @@ import '../services/product_service.dart';
 import '../locator.dart';
 
 class ProductsPage extends StatefulWidget {
-  const ProductsPage({super.key});
+  const ProductsPage({super.key, required AuthService authService});
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();

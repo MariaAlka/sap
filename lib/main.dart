@@ -1,11 +1,28 @@
-import 'package:first/screens/cart_page.dart';
-import 'package:first/screens/product_page.dart';
+import 'package:first/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'providers/auth_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/product_provider.dart';
+
 import 'screens/login_screen.dart';
-import 'services/auth_service.dart';
+import 'screens/product_page.dart';
+import 'screens/product_details_page.dart';
+import 'screens/cart_page.dart'; // If you're using the cart page
 
 void main() {
-  runApp(MyApp(authService: AuthService()));
+  final authService = AuthService();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+      ],
+      child: MyApp(authService: authService),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,26 +33,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'E-Commerce App',
+      title: 'Shop App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      theme: ThemeData(primarySwatch: Colors.blue),
+      initialRoute: '/login',
       routes: {
-        '/login': (context) => LoginScreen(authService: authService),
-        '/home': (context) => ProductsPage(authService: authService),
+        '/login': (context) => LoginScreen(authService: authService), // 👈 Pass it
+        '/products': (context) => ProductsPage(authService: authService),
         '/cart': (context) => const CartPage(),
+        // You can add product details navigation via `Navigator.pushNamed(context, '/product_details', arguments: product);`
       },
-      home: FutureBuilder(
-        future: authService.isLoggedIn(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          return snapshot.data == true
-              ? ProductsPage(authService: authService)
-              : LoginScreen(authService: authService);
-        },
-      ),
     );
   }
 }
