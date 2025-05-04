@@ -1,43 +1,32 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import '../services/cart_service.dart';
 import '../models/product_model.dart';
+import '../locator.dart';
 
-class CartProvider extends ChangeNotifier {
-  final Map<Product, int> _cartItems = {};
+class CartProvider with ChangeNotifier {
+  final CartService _cartService = locator<CartService>();
 
-  Map<Product, int> get cartItems => _cartItems;
+  Map<Product, int> get cartItems => _cartService.cartItems;
 
   void addToCart(Product product) {
-    if (_cartItems.containsKey(product)) {
-      _cartItems[product] = _cartItems[product]! + 1;
-    } else {
-      _cartItems[product] = 1;
-    }
+    _cartService.addToCart(product);
     notifyListeners();
   }
 
   void removeFromCart(Product product) {
-    _cartItems.remove(product);
+    _cartService.removeFromCart(product);
     notifyListeners();
   }
 
   void updateQuantity(Product product, int quantity) {
-    if (quantity <= 0) {
-      removeFromCart(product);
-    } else {
-      _cartItems[product] = quantity;
-    }
+    _cartService.updateQuantity(product, quantity);
     notifyListeners();
   }
 
   void clearCart() {
-    _cartItems.clear();
+    _cartService.clearCart();
     notifyListeners();
   }
 
-  double get totalPrice {
-    return _cartItems.entries.fold(
-      0.0,
-          (sum, entry) => sum + entry.key.price * entry.value,
-    );
-  }
+  double get totalPrice => _cartService.getTotalPrice();
 }
