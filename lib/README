@@ -1,0 +1,37 @@
+Overview
+This is a Flutter-based shopping application that allows users to browse products, manage a shopping cart, and log in securely using authentication. The project follows clean architecture principles and effective state management for a seamless user experience.
+
+Features
+User authentication with JWT for secure login.
+
+Product browsing with detailed listings.
+
+Shopping cart functionality to add, update, and remove items.
+
+State management using the Provider package to keep the UI reactive.
+
+Technologies Used
+Flutter for UI and cross-platform development.
+
+Dio for handling API requests efficiently.
+
+GetIt for dependency injection, making the code more modular.
+
+Provider for managing application state.
+
+Folder Structure
+lib/
+ ┣ models/        # Defines the structure of product and user data
+ ┣ services/      # Handles API interactions (authentication, product retrieval, cart management)
+ ┣ providers/     # Manages state with ChangeNotifierProvider
+ ┣ screens/       # UI components for login, product listings, cart, and product details
+ ┣ locator.dart   # Dependency injection setup using GetIt
+ ┣ main.dart      # Application entry point
+API Integration
+This app communicates with an API to handle authentication and product data retrieval.
+
+Login: https://dummyjson.com/auth/login
+
+Fetching products: https://dummyjson.com/products
+
+The API requests are managed with Dio, ensuring structured responses and error handling.
