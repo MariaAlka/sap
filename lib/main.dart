@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           }
 
           return snapshot.data == true
-              ? LoginScreen(authService: authService)
+              ? ProductsPage(authService: authService)
               : LoginScreen(authService: authService);
         },
       ),
